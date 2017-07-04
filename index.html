@@ -1,0 +1,33 @@
+<html>
+<head>
+
+</head>
+<body>
+
+
+<button id="click">Clique-me!</button>
+
+<textarea id="clicklist"></textarea>
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+  var socket = io.connect('http://localhost:3000');
+  socket.on('connected', function (data) {
+    console.log(data);
+
+    socket.emit('connected-ack', { msg: 'Hello, Server!' });
+  });
+
+  $('#click').on('click', function(){
+  	socket.emit('click', {msg: socket.id + ' clicou no botão'});
+  });
+
+  socket.on('click-ack', function (data){
+  	$('#clicklist').html($('#clicklist').html() + data.msg + '\n');
+  });
+</script>
+
+</body>
